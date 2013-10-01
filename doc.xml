@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE document SYSTEM "pdf.dtd">
+<document>
+	<info>
+		<title>Test &copy; document</title>
+		<subject>Document om te testen of alles werkt</subject>
+		<author>Tinus Bruins</author>
+		<keywords></keywords>
+		<creator>10usb</creator>
+	</info>
+	<style>
+	<!-- 
+	section {
+		page-margin: 30pt 30pt 30pt 30pt;
+	}
+	h1 {
+		display: block;
+		font-size: 16pt;
+		font-family: "Times }new Roman", flat, "asdasd", "zcxxzc";
+		text-shadow: 3pt 3pt #fff; 
+	}
+	p {
+		display: block;
+		margin: 10pt 0pt;
+	}
+	strong {
+		font-weight: bold;
+	}
+	p.special strong {
+		color: #f80;
+	}
+	-->
+	</style>
+	<content size="A4">
+		<section>
+			<header>
+				<p>My pdf library</p>
+			</header>
+			<footer>
+				<p>Pagina: <var name="pageNumber" /> / <var name="totalPageNumbers" /></p>
+			</footer>
+			<body>
+				<h1>PDF Library</h1>
+				<p class="special">Hallo <strong>mooie</strong> text</p>
+			</body>
+		</section>
+	</content>
+</document>
