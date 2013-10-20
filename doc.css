@@ -1,0 +1,29 @@
+section {
+	page-margin: 30pt 30pt 30pt 30pt;
+}
+h1 {
+	display: block;
+	font-size: 16pt;
+	font-family: "Times }new Roman", flat, "asdasd", "zcxxzc";
+	text-shadow: 3pt 3pt #fff; 
+}
+p {
+	display: block;
+	margin: 10pt 0pt;
+}
+strong {
+	font-weight: bold;
+}
+strong:hover {
+	text-decoration: underline;
+}
+p.special > span strong {
+	color: #00f;
+}
+p.special strong {
+	color: #fff;
+}
+
+p.special > strong {
+	color: #f80;
+}
