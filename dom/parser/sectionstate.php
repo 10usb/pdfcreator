@@ -1,8 +1,12 @@
 <?php
 
 class PDFDOMParserSectionState extends PDFDOMParserState {
+	private $section;
+	
 	public function __construct($parser, $attributes){
 		parent::__construct($parser);
+		$this->section = $this->getDocument()->addSection();
+		
 		echo "Section:\n";
 		print_r($attributes);
 	}

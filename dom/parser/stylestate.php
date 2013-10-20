@@ -15,7 +15,7 @@ class PDFDOMParserStyleState extends PDFDOMParserState {
 		if($tag!='style') throw new Exception("Unexpected tag close expected 'style' but got '$tag'");
 		
 		$parser = new PDFDOMStylesheetParser($this->getDocument()->getStylesheet());
-		$parser->parse($this->value);
+		//$parser->parse($this->value);
 		
 		$this->popState();
 	}

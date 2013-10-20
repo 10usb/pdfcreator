@@ -33,4 +33,18 @@ class PDFDOMStylesheet {
 		}
 		return null;
 	}
+
+	/**
+	 *
+	 * @return string
+	 */
+	public function __toString(){
+		$css = '';
+		foreach($this->selectors as $selector){
+			foreach($selector->getSelectors() as $selector){
+				$css.= $selector->toCSS()."\n\n";
+			}
+		}
+		return $css;
+	}
 }

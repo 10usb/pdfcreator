@@ -3,6 +3,10 @@
 class PDFDOMParserContentState extends PDFDOMParserState {
 	public function __construct($parser, $attributes){
 		parent::__construct($parser);
+		if(isset($attributes['size'])){
+			$this->getDocument()->setSize($attributes['size']);
+		}
+		
 		echo "Content:\n";
 		print_r($attributes);
 	}

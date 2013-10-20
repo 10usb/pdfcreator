@@ -64,6 +64,22 @@ class PDFDOMStyleselector {
 	}
 	
 	/**
+	 * Returns all the selectors with a body
+	 */
+	public function getSelectors(){
+		$selectors = array();
+		if($this->hasProperties()){
+			$selectors[] = $this;
+		}
+		
+		foreach($this->subSelectors as $selector){
+			$selectors = array_merge($selector->getSelectors());
+		}
+		
+		return $selectors;
+	}
+	
+	/**
 	 * 
 	 * @param string $tag
 	 * @param string $class
