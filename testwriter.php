@@ -4,8 +4,6 @@ include 'render/render.php';
 
 $document = new PDFDocument();
 
-$document->getPages()->getSize()->getWidth();
-
 $style = new PDFStyle($document);
 $style->paddingLeft		= 50;
 $style->paddingTop		= 50;

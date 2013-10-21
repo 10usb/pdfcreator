@@ -6,16 +6,14 @@ class PDFDOMParserSectionState extends PDFDOMParserState {
 	public function __construct($parser, $attributes){
 		parent::__construct($parser);
 		$this->section = $this->getDocument()->addSection();
-		
-		echo "Section:\n";
-		print_r($attributes);
+		$this->section->setAttributes($attributes);
 	}
 
 	public function openTag($tag, $attributes){
 		switch($tag){
-			case 'header': $this->pushState(new PDFDOMParserDefaultState($this->getParser(), $tag)); break;
-			case 'footer': $this->pushState(new PDFDOMParserDefaultState($this->getParser(), $tag)); break;
-			case 'body': $this->pushState(new PDFDOMParserDefaultState($this->getParser(), $tag)); break;
+			case 'header': $this->pushState(new PDFDOMParserElementState($this->getParser(), $tag, $attributes, $this->section)); break;
+			case 'footer': $this->pushState(new PDFDOMParserElementState($this->getParser(), $tag, $attributes, $this->section)); break;
+			case 'body': $this->pushState(new PDFDOMParserElementState($this->getParser(), $tag, $attributes, $this->section)); break;
 			default: throw new Exception("Unexpected tag open got '$tag'");
 		}
 	}

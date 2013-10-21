@@ -1,5 +1,5 @@
 <?php
-class PDFDOMSection extends PDFDOMParent {
+class PDFDOMSection extends PDFDOMElement {
 	public function __construct(){
 		parent::__construct('section');
 	}

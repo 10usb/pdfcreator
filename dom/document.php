@@ -9,7 +9,7 @@ class PDFDOMDocument {
 	public function __construct(){
 		$this->info			= new PDFDOMInfo();
 		$this->size			= 'A4';
-		$this->stylesheet	= new PDFDOMStylesheet();
+		$this->stylesheet	= new CSSDocument();
 		$this->sections		= array();
 	}
 	

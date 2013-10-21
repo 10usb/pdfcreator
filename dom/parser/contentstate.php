@@ -6,9 +6,6 @@ class PDFDOMParserContentState extends PDFDOMParserState {
 		if(isset($attributes['size'])){
 			$this->getDocument()->setSize($attributes['size']);
 		}
-		
-		echo "Content:\n";
-		print_r($attributes);
 	}
 	
 	public function openTag($tag, $attributes){
