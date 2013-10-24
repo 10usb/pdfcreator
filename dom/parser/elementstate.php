@@ -13,7 +13,7 @@ class PDFDOMParserElementState extends PDFDOMParserState {
 	}
 
 	public function openTag($tag, $attributes){
-		$this->pushState(new PDFDOMParserElementState($this->getParser(), $tag, $attributes, $this->section));
+		$this->pushState(new PDFDOMParserElementState($this->getParser(), $tag, $attributes, $this->element));
 	}
 	
 	public function cdata($data){

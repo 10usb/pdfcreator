@@ -21,6 +21,18 @@ class PDFDOMParent extends PDFDOMNode {
 		return $this->children;
 	}
 	
+	public function getChildrenByTagName($tagName, $limit=0){
+		$children = array();
+		foreach($this->children as $child){
+			if($child instanceof PDFDOMParent && $child->getTagName()==$tagName){
+				if($limit===true) return $child;
+				$children[] = $child;
+			}
+			if($limit && count($children)==$limit) return $children;
+		}
+		return $children;
+	}
+	
 	public function append($child){
 		if($child->parent) return false;
 

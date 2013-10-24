@@ -10,4 +10,12 @@ class PDFDOMText extends PDFDOMNode {
 	public function getText(){
 		return $this->text;
 	}
+
+	/**
+	 * Returns the XML
+	 * @return string
+	 */
+	public function __toString(){
+		return htmlentities($this->text);
+	}
 }

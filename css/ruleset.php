@@ -4,6 +4,7 @@ class CSSRuleSet {
 	private $selectors;
 	private $specificity;
 	private $properties;
+	private $parent;
 	
 	public function __construct($selector = null){
 		$this->selector		= $selector;
@@ -12,14 +13,41 @@ class CSSRuleSet {
 	}
 	
 	/**
+	 * Set the parent
+	 * @param CSSRuleSet $parent
+	 */
+	public function setParent($parent){
+		if($this->selector==null) $this->parent = $parent;
+	}
+	
+	/**
 	 * 
 	 * @param string $key
 	 * @param string $value
 	 */
 	public function setProperty($key, $value){
-		$this->properties[$key] = $value;
+		if($value instanceof CSSProperty){
+			$this->properties[$key] = $value;
+		}else{
+			$this->properties[$key] = new CSSProperty($value);
+		}
 	}
 	
+	/**
+	 * 
+	 * @param string $key
+	 * @return CSSProperty
+	 */
+	public function getProperty($key){
+		if(isset($this->properties[$key])) return $this->properties[$key];
+		if($this->parent) return $this->parent->getProperty($key);
+		return false;
+	}
+	
+	/**
+	 * 
+	 * @return array<string>
+	 */
 	public function getProperties(){
 		return $this->properties;
 	}

@@ -44,4 +44,27 @@ class PDFDOMDocument {
 	public function addSection(){
 		return $this->sections[] = new PDFDOMSection();
 	}
+	
+	/**
+	 * @return array<PDFDOMSection>
+	 */
+	public function getSections(){
+		return $this->sections;
+	}
+
+	/**
+	 * Returns the XML
+	 * @return string
+	 */
+	public function __toString(){
+		$xml = '';
+		$xml.= "<document>\n";
+		$xml.= "  <content>";
+		foreach($this->sections as $section){
+			$xml.= str_replace("\n", "\n    ", $section);
+		}
+		$xml.= "\n  </content>\n";
+		$xml.= "</document>";
+		return $xml;
+	}
 }

@@ -52,7 +52,8 @@ class PDFContent {
 	 * Returns the content writer to allow easy writing of text and images
 	 * @return PDFContentWriter
 	 */
-	public function getWriter(){
+	public function getWriter($new=false){
+		if($new) return new PDFContentWriter($this);
 		return $this->writer;
 	}
 	
