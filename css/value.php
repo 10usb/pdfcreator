@@ -34,7 +34,7 @@ class CSSValue {
 	}
 	
 	public function getString($throw = false){
-		if(preg_match('/^("[^"]+")$/is', $this->value, $matches)) return $matches[1];
+		if(preg_match('/^"([^"]+)"$/is', $this->value, $matches)) return $matches[1];
 		if($throw) throw new Exception("Invalid Value '$this->value'");
 		return false;
 	}

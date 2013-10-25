@@ -1,6 +1,10 @@
 <?php
 
 class CSSparser {
+	/**
+	 * 
+	 * @var CSSDocument
+	 */
 	private $document;
 	
 	/**

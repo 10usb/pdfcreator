@@ -10,26 +10,8 @@
 	</info>
 	<style>
 	<!-- 
-	section {
-		page-margin: 50pt;
-		font-size: 12pt;
-	}
-	h1 {
-		display: block;
-		font-size: 16pt;
-		font-family: "Times }new Roman", flat, "asdasd", "zcxxzc";
-		text-shadow: 3pt 3pt #fff; 
-	}
-	p {
-		display: block;
-		margin: 10pt 0pt;
-	}
-	strong {
-		display: inline;
-		font-weight: bold;
-	}
 	p.special strong {
-		color: #f80;
+		font-color: #f80;
 	}
 	-->
 	</style>
@@ -44,14 +26,23 @@
 			<body>
 				<h1>PDF Library</h1>
 				<p class="special">Hallo <strong>mooie</strong> text</p>
-				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Phasellus quis lectus metus, at posuere neque. Sed pharetra nibh eget orci convallis at posuere leo convallis. Sed blandit augue vitae augue scelerisque bibendum. Vivamus sit amet libero turpis, non venenatis urna. In blandit, odio convallis suscipit venenatis, ante ipsum cursus augue.</p>
+				<p>Lorem ipsum dolor sit amet, <strong>consectetur adipiscing</strong> elit. Phasellus quis lectus metus, at posuere neque. Sed pharetra nibh eget orci convallis at posuere leo convallis. Sed blandit augue vitae augue scelerisque bibendum. Vivamus sit amet libero turpis, non venenatis urna. In blandit, odio convallis suscipit venenatis, ante ipsum cursus augue.</p>
 				<p class="special">Hallo <strong>mooie</strong> text</p>
+				<p>Lorem ipsum dolor sit amet, <strong>consectetur adipiscing</strong> elit. Phasellus quis lectus metus, at posuere neque. Sed pharetra nibh eget orci convallis at posuere leo convallis. Sed blandit augue vitae augue scelerisque bibendum. Vivamus sit amet libero turpis, non venenatis urna. In blandit, odio convallis suscipit venenatis, ante ipsum cursus augue.</p>
 				<p class="special">Hallo <strong>mooie</strong> text</p>
+				<p>Lorem ipsum dolor sit amet, <strong>consectetur adipiscing</strong> elit. Phasellus quis lectus metus, at posuere neque. Sed pharetra nibh eget orci convallis at posuere leo convallis. Sed blandit augue vitae augue scelerisque bibendum. Vivamus sit amet libero turpis, non venenatis urna. In blandit, odio convallis suscipit venenatis, ante ipsum cursus augue.</p>
 				<p class="special">Hallo <strong>mooie</strong> text</p>
+				<p>Lorem ipsum dolor sit amet, <strong>consectetur adipiscing</strong> elit. Phasellus quis lectus metus, at posuere neque. Sed pharetra nibh eget orci convallis at posuere leo convallis. Sed blandit augue vitae augue scelerisque bibendum. Vivamus sit amet libero turpis, non venenatis urna. In blandit, odio convallis suscipit venenatis, ante ipsum cursus augue.</p>
 				<p class="special">Hallo <strong>mooie</strong> text</p>
+				<p>Lorem ipsum dolor sit amet, <strong>consectetur adipiscing</strong> elit. Phasellus quis lectus metus, at posuere neque. Sed pharetra nibh eget orci convallis at posuere leo convallis. Sed blandit augue vitae augue scelerisque bibendum. Vivamus sit amet libero turpis, non venenatis urna. In blandit, odio convallis suscipit venenatis, ante ipsum cursus augue.</p>
 				<p class="special">Hallo <strong>mooie</strong> text</p>
+				<p>Lorem ipsum dolor sit amet, <strong>consectetur adipiscing</strong> elit. Phasellus quis lectus metus, at posuere neque. Sed pharetra nibh eget orci convallis at posuere leo convallis. Sed blandit augue vitae augue scelerisque bibendum. Vivamus sit amet libero turpis, non venenatis urna. In blandit, odio convallis suscipit venenatis, ante ipsum cursus augue.</p>
 				<p class="special">Hallo <strong>mooie</strong> text</p>
+				<p>Lorem ipsum dolor sit amet, <strong>consectetur adipiscing</strong> elit. Phasellus quis lectus metus, at posuere neque. Sed pharetra nibh eget orci convallis at posuere leo convallis. Sed blandit augue vitae augue scelerisque bibendum. Vivamus sit amet libero turpis, non venenatis urna. In blandit, odio convallis suscipit venenatis, ante ipsum cursus augue.</p>
 				<p class="special">Hallo <strong>mooie</strong> text</p>
+				<p>Lorem ipsum dolor sit amet, <strong>consectetur adipiscing</strong> elit. Phasellus quis lectus metus, at posuere neque. Sed pharetra nibh eget orci convallis at posuere leo convallis. Sed blandit augue vitae augue scelerisque bibendum. Vivamus sit amet libero turpis, non venenatis urna. In blandit, odio convallis suscipit venenatis, ante ipsum cursus augue.</p>
+				<p class="special">Hallo <strong>mooie</strong> text</p>
+				<p>Lorem ipsum dolor sit amet, <strong>consectetur adipiscing</strong> elit. Phasellus quis lectus metus, at posuere neque. Sed pharetra nibh eget orci convallis at posuere leo convallis. Sed blandit augue vitae augue scelerisque bibendum. Vivamus sit amet libero turpis, non venenatis urna. In blandit, odio convallis suscipit venenatis, ante ipsum cursus augue.</p>
 				<p class="special">Hallo <strong>mooie</strong> text</p>
 			</body>
 		</section>

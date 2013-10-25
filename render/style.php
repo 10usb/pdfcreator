@@ -45,8 +45,23 @@ class PDFStyle {
 		return true;
 	}
 	
-	public function setColor($red, $green, $blue){
-		$this->textColor = new PDFColor($red, $green, $blue);
+	public function setColor($red, $green = null, $blue = null){
+		if($green==null && $blue==null){
+			if(is_int($red)){
+				$this->textColor = new PDFColor($red, $red, $red);
+			}else{
+				if(preg_match('/^\#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/is', strtolower($red), $matches)){
+					$this->textColor = new PDFColor(hexdec($matches[1]), hexdec($matches[2]), hexdec($matches[2]));
+				}elseif(preg_match('/^\#([0-9a-f])([0-9a-f])([0-9a-f])$/is', strtolower($red), $matches)){
+					$this->textColor = new PDFColor(hexdec($matches[1].$matches[1]), hexdec($matches[2].$matches[2]), hexdec($matches[2].$matches[2]));
+				}else{
+					throw new Exception("Invalid color value '$red'");
+				}
+			}
+			
+		}else{
+			$this->textColor = new PDFColor($red, $green, $blue);
+		}
 	}
 	
 	public function getTextWidth($text){

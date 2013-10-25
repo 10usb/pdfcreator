@@ -20,6 +20,11 @@ class PDFDOMParser {
 		$this->currentState	= new PDFDOMParserFileState($this);
 	}
 	
+	public function addDefaultStyle($css){
+		$parser = new CSSparser($this->document->getStylesheet());
+		$parser->parse($css);
+	}
+	
 	public function pushState($state){
 		array_push($this->stateStack, $this->currentState);
 		$this->currentState = $state;

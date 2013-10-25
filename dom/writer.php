@@ -9,12 +9,17 @@ class PDFDOMWriter {
 	 * @var PDFDocument
 	 */
 	private $pdfdocument;
+
+	/**
+	 * @var string
+	 */
+	private $defaultStyle;
 	
 	/**
 	 * 
 	 * @param PDFDOMDocument $domdocument
 	 */
-	public function __construct($domdocument){
+	public function __construct($domdocument, $defaultStyle = null){
 		$this->domdocument = $domdocument;
 	}
 	
@@ -87,20 +92,23 @@ class PDFDOMWriter {
 	
 	/**
 	 * 
-	 * @param PDFContentWriter $writer
+	 * @param PDFContent $content
 	 * @param PDFDOMElement $body
+	 * @param CSSSelector $selector
+	 * @param CSSRuleSet $ruleset
 	 */
 	private function _content($content, $body, $selector, $ruleset){
 		$writer = $content->getWriter(true);
-		$writer->getStyle()->setFont('Times-Italic', $this->getTranslatedStyle($ruleset, 'font-size')->getPoint(true));
-		$writer->getStyle()->setColor(66, 66, 66);
-		$writer->getStyle()->setLineHeight(20);
+		$writer->getStyle()->setFont($this->getTranslatedStyle($ruleset, 'font-family')->getString(true), $this->getTranslatedStyle($ruleset, 'font-size')->getPoint(true));
+		$writer->getStyle()->setColor($this->getTranslatedStyle($ruleset, 'font-color')->getHex(true));
+		$writer->getStyle()->setLineHeight($this->getTranslatedStyle($ruleset, 'line-height')->getPoint(true));
 		
 		$this->bufferText = null;
 		$this->bufferDisplay = null;
 
 		foreach($body->getChildren() as $child){
 			if($child instanceof PDFDOMText){
+				$this->_flush(false);
 				$this->bufferWriter = $writer;
 				$this->bufferText = $child->getText();
 				
@@ -148,6 +156,8 @@ class PDFDOMWriter {
 				$this->bufferWriter->text($this->bufferText);
 			}
 		}
+		$this->bufferText = null;
+		$this->bufferWriter = null;
 	}
 	
 	/**
@@ -157,12 +167,12 @@ class PDFDOMWriter {
 	 */
 	private function _block($content, $element, $selector, $ruleset){
 		$style = new PDFStyle($this->pdfdocument);
-		$style->borderColor		= new PDFColor(0, 0, 0);
-		$style->backgroundColor	= new PDFColor(223, 223, 223);
-		$style->paddingLeft		= 10;
-		$style->paddingTop		= 10;
-		$style->paddingRight	= 10;
-		$style->paddingBottom	= 10;
+		//$style->borderColor		= new PDFColor(0, 0, 0);
+		//$style->backgroundColor	= new PDFColor(223, 223, 223);
+		$style->paddingLeft		= $this->getTranslatedStyle($ruleset, 'padding-left')->getPoint(true);
+		$style->paddingTop		= $this->getTranslatedStyle($ruleset, 'padding-top')->getPoint(true);
+		$style->paddingRight	= $this->getTranslatedStyle($ruleset, 'padding-right')->getPoint(true);
+		$style->paddingBottom	= $this->getTranslatedStyle($ruleset, 'padding-bottom')->getPoint(true);
 
 		$body = new PDFCell($this->pdfdocument, $content->getWidth(), $style);
 		$this->_content($body->getContent(), $element, $selector, $ruleset);
