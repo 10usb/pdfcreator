@@ -66,10 +66,10 @@ class PDFDOMWriter {
 		$ruleset = $this->domdocument->getStylesheet()->match($this->selector);
 		
 		$style = new PDFStyle($this->pdfdocument);
-		$style->paddingLeft		= $this->getTranslatedStyle($ruleset, 'page-margin-left')->getPoint(true);
-		$style->paddingTop		= $this->getTranslatedStyle($ruleset, 'page-margin-top')->getPoint(true);
-		$style->paddingRight	= $this->getTranslatedStyle($ruleset, 'page-margin-right')->getPoint(true);
-		$style->paddingBottom	= $this->getTranslatedStyle($ruleset, 'page-margin-bottom')->getPoint(true);
+		$style->paddingLeft		= $this->getTranslatedStyle($ruleset, 'page-margin-left')->getMeasurement('pt');
+		$style->paddingTop		= $this->getTranslatedStyle($ruleset, 'page-margin-top')->getMeasurement('pt');
+		$style->paddingRight	= $this->getTranslatedStyle($ruleset, 'page-margin-right')->getMeasurement('pt');
+		$style->paddingBottom	= $this->getTranslatedStyle($ruleset, 'page-margin-bottom')->getMeasurement('pt');
 		$style->height			= $this->pdfdocument->getPages()->getSize()->getHeight();
 
 		$body = new PDFCell($this->pdfdocument, $this->pdfdocument->getPages()->getSize()->getWidth(), $style);
@@ -99,9 +99,9 @@ class PDFDOMWriter {
 	 */
 	private function _content($content, $body, $selector, $ruleset){
 		$writer = $content->getWriter(true);
-		$writer->getStyle()->setFont($this->getTranslatedStyle($ruleset, 'font-family')->getString(true), $this->getTranslatedStyle($ruleset, 'font-size')->getPoint(true));
-		$writer->getStyle()->setColor($this->getTranslatedStyle($ruleset, 'font-color')->getHex(true));
-		$writer->getStyle()->setLineHeight($this->getTranslatedStyle($ruleset, 'line-height')->getPoint(true));
+		$writer->getStyle()->setFont($this->getTranslatedStyle($ruleset, 'font-family')->getString(), $this->getTranslatedStyle($ruleset, 'font-size')->getMeasurement('pt'));
+		$writer->getStyle()->setColor($this->getTranslatedStyle($ruleset, 'font-color')->getRed(), $this->getTranslatedStyle($ruleset, 'font-color')->getGreen(), $this->getTranslatedStyle($ruleset, 'font-color')->getBlue());
+		$writer->getStyle()->setLineHeight($this->getTranslatedStyle($ruleset, 'line-height')->getMeasurement('pt'));
 		
 		$this->bufferText = null;
 		$this->bufferDisplay = null;
@@ -169,10 +169,10 @@ class PDFDOMWriter {
 		$style = new PDFStyle($this->pdfdocument);
 		//$style->borderColor		= new PDFColor(0, 0, 0);
 		//$style->backgroundColor	= new PDFColor(223, 223, 223);
-		$style->paddingLeft		= $this->getTranslatedStyle($ruleset, 'padding-left')->getPoint(true);
-		$style->paddingTop		= $this->getTranslatedStyle($ruleset, 'padding-top')->getPoint(true);
-		$style->paddingRight	= $this->getTranslatedStyle($ruleset, 'padding-right')->getPoint(true);
-		$style->paddingBottom	= $this->getTranslatedStyle($ruleset, 'padding-bottom')->getPoint(true);
+		$style->paddingLeft		= $this->getTranslatedStyle($ruleset, 'padding-left')->getMeasurement('pt');
+		$style->paddingTop		= $this->getTranslatedStyle($ruleset, 'padding-top')->getMeasurement('pt');
+		$style->paddingRight	= $this->getTranslatedStyle($ruleset, 'padding-right')->getMeasurement('pt');
+		$style->paddingBottom	= $this->getTranslatedStyle($ruleset, 'padding-bottom')->getMeasurement('pt');
 
 		$body = new PDFCell($this->pdfdocument, $content->getWidth(), $style);
 		$this->_content($body->getContent(), $element, $selector, $ruleset);

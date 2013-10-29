@@ -1,40 +1,112 @@
 <?php
 
 class CSSValue {
-	private $value;
+	/**
+	 * 
+	 * @var string
+	 */
+	protected $value;
 	
-	public function __construct($value){
-		$invalid = true;
-		if(preg_match('/^\d+(\.\d+)?pt$/is', $value)) $invalid = false;
-		elseif(preg_match('/^[a-z\-]+$/is', $value)) $invalid = false;
-		elseif(preg_match('/^\#([0-9a-f]{3}|[0-9a-f]{6})$/is', $value)) $invalid = false;
-		elseif(preg_match('/^"[^"]+"$/is', $value)) $invalid = false;
+	/**
+	 * 
+	 * @param string $value
+	 * @throws Exception
+	 * @return CSSName|CSSString|CSSColor|CSSMeasurement
+	 */
+	public static function parse($value){
+		if(preg_match('/^([a-z\-]+)$/is', $value)) return new CSSName($value);
+		if(preg_match('/^"([^"]+)"$/is', $value)) return new CSSString($value);
+		if(preg_match('/^(\#([0-9a-f]{3}|[0-9a-f]{6}))$/is', $value)) return new CSSColor($value);
+		if(preg_match('/^(\d+(\.\d+)?)(\%|in|cm|mm|em|pt|pc|px)$/is', $value)) return new CSSMeasurement($value);
 		
-		if($invalid) throw new Exception("Invalid Value '$value'");
-		
+		throw new Exception("Invalid Value '$value'");
+	}
+	
+	/**
+	 * 
+	 * @param string $value
+	 */
+	private function __construct($value){
 		$this->value = $value;
+		$this->init();
 	}
 	
-	public function getPoint($throw = false){
-		if(preg_match('/^(\d+(\.\d+)?)pt$/is', $this->value, $matches)) return $matches[1];
+	/**
+	 * Empty init function
+	 */
+	protected function init(){}
+	
+	/**
+	 * Returns the translated value
+	 * @param string $value
+	 * @param string $unit
+	 * @param boolean $throw
+	 * @throws Exception
+	 * @return boolean
+	 */
+	public function getMeasurement($unit, $value = null, $throw = true){
 		if($throw) throw new Exception("Invalid Value '$this->value'");
 		return false;
 	}
 	
-	public function getName($throw = false){
-		if(preg_match('/^([a-z\-]+)$/is', $this->value, $matches)) return $matches[1];
+	/**
+	 * Return the name
+	 * @param boolean $throw
+	 * @throws Exception
+	 * @return boolean
+	 */
+	public function getName($throw = true){
 		if($throw) throw new Exception("Invalid Value '$this->value'");
 		return false;
 	}
 	
-	public function getHex($throw = false){
-		if(preg_match('/^(\#([0-9a-f]{3}|[0-9a-f]{6}))$/is', $this->value, $matches)) return $matches[1];
+	/**
+	 * Return true if the value is a color
+	 * @return boolean
+	 */
+	public function isColor(){
+		return false;
+	}
+	
+	/**
+	 * The red value
+	 * @param boolean $throw
+	 * @throws Exception
+	 * @return boolean
+	 */
+	public function getRed($throw = true){
+		if($throw) throw new Exception("Invalid Value '$this->value'");
+	}
+	
+	/**
+	 * The green value
+	 * @param boolean $throw
+	 * @throws Exception
+	 * @return boolean
+	 */
+	public function getGreen($throw = true){
 		if($throw) throw new Exception("Invalid Value '$this->value'");
 		return false;
 	}
 	
-	public function getString($throw = false){
-		if(preg_match('/^"([^"]+)"$/is', $this->value, $matches)) return $matches[1];
+	/**
+	 * The blue value
+	 * @param boolean $throw
+	 * @throws Exception
+	 * @return boolean
+	 */
+	public function getBlue($throw = true){
+		if($throw) throw new Exception("Invalid Value '$this->value'");
+		return false;
+	}
+
+	/**
+	 * String value or name
+	 * @param boolean $throw
+	 * @throws Exception
+	 * @return boolean
+	 */
+	public function getString($throw = true){
 		if($throw) throw new Exception("Invalid Value '$this->value'");
 		return false;
 	}
