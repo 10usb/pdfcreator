@@ -14,6 +14,11 @@ class PDFDOMWriter {
 	 * @var string
 	 */
 	private $defaultStyle;
+
+	/**
+	 * @var CSSPath
+	 */
+	private $path;
 	
 	/**
 	 * 
@@ -23,6 +28,10 @@ class PDFDOMWriter {
 		$this->domdocument = $domdocument;
 	}
 	
+	/**
+	 * 
+	 * @return PDFDocument
+	 */
 	public function create(){
 		$this->pdfdocument = new PDFDocument();
 		
@@ -62,8 +71,10 @@ class PDFDOMWriter {
 	 * @param PDFDOMSection $section
 	 */
 	private function _section($section){
-		$this->selector = $selector = $this->getSelector($section);
-		$ruleset = $this->domdocument->getStylesheet()->match($this->selector);
+		$this->path = new CSSPath($this->domdocument->getStylesheet());
+		$this->path->push($section->getTagName(), $section->getClasses(), null);
+
+		$ruleset = $this->path->getRuleSet();
 		
 		$style = new PDFStyle($this->pdfdocument);
 		$style->paddingLeft		= $this->getTranslatedStyle($ruleset, 'page-margin-left')->getMeasurement('pt');
@@ -74,7 +85,7 @@ class PDFDOMWriter {
 
 		$body = new PDFCell($this->pdfdocument, $this->pdfdocument->getPages()->getSize()->getWidth(), $style);
 		
-		$this->_content($body->getContent(), $section->getChildrenByTagName('body', true), $selector, $ruleset);
+		$this->_content($body->getContent(), $section->getChildrenByTagName('body', true));
 		
 		$this->_flush(false);
 
@@ -97,7 +108,8 @@ class PDFDOMWriter {
 	 * @param CSSSelector $selector
 	 * @param CSSRuleSet $ruleset
 	 */
-	private function _content($content, $body, $selector, $ruleset){
+	private function _content($content, $body){
+		$ruleset = $this->path->getRuleSet();
 		$writer = $content->getWriter(true);
 		$writer->getStyle()->setFont($this->getTranslatedStyle($ruleset, 'font-family')->getString(), $this->getTranslatedStyle($ruleset, 'font-size')->getMeasurement('pt'));
 		$writer->getStyle()->setColor($this->getTranslatedStyle($ruleset, 'font-color')->getRed(), $this->getTranslatedStyle($ruleset, 'font-color')->getGreen(), $this->getTranslatedStyle($ruleset, 'font-color')->getBlue());
@@ -113,24 +125,25 @@ class PDFDOMWriter {
 				$this->bufferText = $child->getText();
 				
 			}else{
-				$currentSelector = $selector->setSelector($this->getSelector($child));
-				$currentRuleset = $this->domdocument->getStylesheet()->match($this->selector);
-				$currentRuleset->setParent($ruleset);
+				$this->path->push($child->getTagName(), $child->getClasses(), null);
+				$currentRuleset = $this->path->getRuleSet();
 				
 				switch($currentRuleset->getProperty('display')){
 					case 'block':
 						$this->_flush(true);
-						$this->_block($content, $child, $currentSelector, $currentRuleset);
+						$this->_block($content, $child);
 					break;
 					case 'inline':
 						$this->_flush(false);
-						$this->_content($content, $child, $currentSelector, $currentRuleset);
+						$this->_content($content, $child);
 					break;
 					default:
-						$writer->text("$child");
+						$writer->text("ERROR: $child");
 					break;
 				}
 				$this->bufferDisplay = $currentRuleset->getProperty('display');
+				
+				$this->path->pop();
 			}
 		}
 	}
@@ -165,7 +178,8 @@ class PDFDOMWriter {
 	 * @param PDFContentWriter $writer
 	 * @param PDFDOMElement $body
 	 */
-	private function _block($content, $element, $selector, $ruleset){
+	private function _block($content, $element){
+		$ruleset = $this->path->getRuleSet();
 		$style = new PDFStyle($this->pdfdocument);
 		//$style->borderColor		= new PDFColor(0, 0, 0);
 		//$style->backgroundColor	= new PDFColor(223, 223, 223);
@@ -175,7 +189,7 @@ class PDFDOMWriter {
 		$style->paddingBottom	= $this->getTranslatedStyle($ruleset, 'padding-bottom')->getMeasurement('pt');
 
 		$body = new PDFCell($this->pdfdocument, $content->getWidth(), $style);
-		$this->_content($body->getContent(), $element, $selector, $ruleset);
+		$this->_content($body->getContent(), $element);
 		$this->_flush(true);
 		$content->append($body);
 	}

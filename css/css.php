@@ -12,6 +12,7 @@ class PDFCSS {
 		include self::path('color.php');
 		include self::path('measurement.php');
 		include self::path('parser.php');
+		include self::path('path.php');
 	}
 
 	public static function path($file){
