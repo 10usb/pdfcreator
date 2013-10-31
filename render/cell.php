@@ -86,6 +86,7 @@ class PDFCell extends PDFBlock {
 		}
 		if($this->style->backgroundColor){
 			$filled = true;
+			if(!$border) $borderWidth = 0;
 			$target->getPage()->setColor($this->style->backgroundColor);
 		}
 		if($border || $filled){

@@ -13,6 +13,7 @@ class PDFCSS {
 		include self::path('measurement.php');
 		include self::path('parser.php');
 		include self::path('path.php');
+		include self::path('translator.php');
 	}
 
 	public static function path($file){

@@ -71,16 +71,14 @@ class PDFDOMWriter {
 	 * @param PDFDOMSection $section
 	 */
 	private function _section($section){
-		$this->path = new CSSPath($this->domdocument->getStylesheet());
+		$this->path = new CSSPath($this->domdocument->getStylesheet(), new PDFDOMCSSTranslator());
 		$this->path->push($section->getTagName(), $section->getClasses(), null);
-
-		$ruleset = $this->path->getRuleSet();
 		
 		$style = new PDFStyle($this->pdfdocument);
-		$style->paddingLeft		= $this->getTranslatedStyle($ruleset, 'page-margin-left')->getMeasurement('pt');
-		$style->paddingTop		= $this->getTranslatedStyle($ruleset, 'page-margin-top')->getMeasurement('pt');
-		$style->paddingRight	= $this->getTranslatedStyle($ruleset, 'page-margin-right')->getMeasurement('pt');
-		$style->paddingBottom	= $this->getTranslatedStyle($ruleset, 'page-margin-bottom')->getMeasurement('pt');
+		$style->paddingLeft		= $this->path->getValue('page-margin-left');
+		$style->paddingTop		= $this->path->getValue('page-margin-top');
+		$style->paddingRight	= $this->path->getValue('page-margin-right');
+		$style->paddingBottom	= $this->path->getValue('page-margin-bottom');
 		$style->height			= $this->pdfdocument->getPages()->getSize()->getHeight();
 
 		$body = new PDFCell($this->pdfdocument, $this->pdfdocument->getPages()->getSize()->getWidth(), $style);
@@ -106,14 +104,12 @@ class PDFDOMWriter {
 	 * @param PDFContent $content
 	 * @param PDFDOMElement $body
 	 * @param CSSSelector $selector
-	 * @param CSSRuleSet $ruleset
 	 */
 	private function _content($content, $body){
-		$ruleset = $this->path->getRuleSet();
 		$writer = $content->getWriter(true);
-		$writer->getStyle()->setFont($this->getTranslatedStyle($ruleset, 'font-family')->getString(), $this->getTranslatedStyle($ruleset, 'font-size')->getMeasurement('pt'));
-		$writer->getStyle()->setColor($this->getTranslatedStyle($ruleset, 'font-color')->getRed(), $this->getTranslatedStyle($ruleset, 'font-color')->getGreen(), $this->getTranslatedStyle($ruleset, 'font-color')->getBlue());
-		$writer->getStyle()->setLineHeight($this->getTranslatedStyle($ruleset, 'line-height')->getMeasurement('pt'));
+		$writer->getStyle()->setFont($this->path->getValue('-pdf-font-family'), $this->path->getValue('font-size'));
+		$writer->getStyle()->setColor($this->path->getValue('font-color'));
+		$writer->getStyle()->setLineHeight($this->path->getValue('line-height'));
 		
 		$this->bufferText = null;
 		$this->bufferDisplay = null;
@@ -126,9 +122,8 @@ class PDFDOMWriter {
 				
 			}else{
 				$this->path->push($child->getTagName(), $child->getClasses(), null);
-				$currentRuleset = $this->path->getRuleSet();
 				
-				switch($currentRuleset->getProperty('display')){
+				switch($this->path->getValue('display')){
 					case 'block':
 						$this->_flush(true);
 						$this->_block($content, $child);
@@ -141,7 +136,7 @@ class PDFDOMWriter {
 						$writer->text("ERROR: $child");
 					break;
 				}
-				$this->bufferDisplay = $currentRuleset->getProperty('display');
+				$this->bufferDisplay = $this->path->getValue('display');
 				
 				$this->path->pop();
 			}
@@ -179,84 +174,18 @@ class PDFDOMWriter {
 	 * @param PDFDOMElement $body
 	 */
 	private function _block($content, $element){
-		$ruleset = $this->path->getRuleSet();
 		$style = new PDFStyle($this->pdfdocument);
-		//$style->borderColor		= new PDFColor(0, 0, 0);
-		//$style->backgroundColor	= new PDFColor(223, 223, 223);
-		$style->paddingLeft		= $this->getTranslatedStyle($ruleset, 'padding-left')->getMeasurement('pt');
-		$style->paddingTop		= $this->getTranslatedStyle($ruleset, 'padding-top')->getMeasurement('pt');
-		$style->paddingRight	= $this->getTranslatedStyle($ruleset, 'padding-right')->getMeasurement('pt');
-		$style->paddingBottom	= $this->getTranslatedStyle($ruleset, 'padding-bottom')->getMeasurement('pt');
+		$style->borderColor		= $this->path->getValue('border-color');
+		$style->borderWidth		= $this->path->getValue('border-width');
+		$style->backgroundColor	= $this->path->getValue('background-color');
+		$style->paddingLeft		= $this->path->getValue('padding-left');
+		$style->paddingTop		= $this->path->getValue('padding-top');
+		$style->paddingRight	= $this->path->getValue('padding-right');
+		$style->paddingBottom	= $this->path->getValue('padding-bottom');
 
 		$body = new PDFCell($this->pdfdocument, $content->getWidth(), $style);
 		$this->_content($body->getContent(), $element);
 		$this->_flush(true);
 		$content->append($body);
-	}
-	
-	/**
-	 * 
-	 * @param PDFDOMElement $element
-	 * @return CSSSelector
-	 */
-	private function getSelector($element){
-		return new CSSSelector('>', $element->getTagName(), $element->getClasses(), null);
-	}
-	
-	/**
-	 * 
-	 * @param CSSRuleSet $ruleset
-	 * @param string $property
-	 * @return CSSValue
-	 * @throws Exception
-	 */
-	private function getTranslatedStyle($ruleset, $key){
-		$property = $ruleset->getProperty($key);
-		if($property){
-			if($property->getCount()==1) return $property->getValue(0);
-			throw new Exception("Invalid property count for '$key'");
-		}
-		
-		if(preg_match('/^(.+)-(left|top|right|bottom)$/', $key, $matches)){
-			return $this->getTranslatedStyleLTRB($ruleset, $matches[1], $matches[2]);
-		}else{
-			switch($key){
-			}
-		}
-		throw new Exception("Unknow property '$key'");
-	}
-	
-	/**
-	 * 
-	 * @param CSSRuleSet $ruleset
-	 * @param string $property
-	 * @return CSSValue
-	 * @throws Exception
-	 */
-	private function getTranslatedStyleLTRB($ruleset, $key, $side){
-		$property = $ruleset->getProperty($key);
-		if(!$property) throw new Exception("Unknow property '$key'");
-		
-		switch($property->getCount()){
-			case 1: return $property->getValue(0);
-			case 2: switch($side){
-				case 'top': case 'bottom': return $property->getValue(0);
-				case 'left': case 'right': return $property->getValue(1);
-			}
-			case 3: switch($side){
-				case 'top': return $property->getValue(0);
-				case 'right': return $property->getValue(1);
-				case 'bottom': return $property->getValue(2);
-				case 'left':  return new CSSValue('0pt');
-			}
-			case 4: switch($side){
-				case 'top': return $property->getValue(0);
-				case 'right': return $property->getValue(1);
-				case 'bottom': return $property->getValue(2);
-				case 'left':  return $property->getValue(3);
-			}
-			
-		}
-		throw new Exception("Invalid property count for '$key'");
 	}
 }

@@ -4,20 +4,11 @@ class CSSRuleSet {
 	private $selectors;
 	private $specificity;
 	private $properties;
-	private $parent;
 	
 	public function __construct($selector = null){
 		$this->selector		= $selector;
 		$this->specificity	= $selector ? $selector->getSpecificity(new CSSSpecificity()) : null;
 		$this->properties	= array();
-	}
-	
-	/**
-	 * Set the parent
-	 * @param CSSRuleSet $parent
-	 */
-	public function setParent($parent){
-		if($this->selector==null) $this->parent = $parent;
 	}
 	
 	/**
@@ -40,7 +31,6 @@ class CSSRuleSet {
 	 */
 	public function getProperty($key){
 		if(isset($this->properties[$key])) return $this->properties[$key];
-		if($this->parent) return $this->parent->getProperty($key);
 		return false;
 	}
 	

@@ -37,6 +37,7 @@ class PDFStyle {
 	
 	public function setFont($fontName, $size){
 		$font = $this->document->getResources()->getFont($fontName);
+		if(!$font) throw new Exception("Font not found '$fontName'");
 		if(!$font) return false;
 	
 		$this->font = $font;
@@ -47,7 +48,9 @@ class PDFStyle {
 	
 	public function setColor($red, $green = null, $blue = null){
 		if($green==null && $blue==null){
-			if(is_int($red)){
+			if($red instanceof PDFColor){
+				$this->textColor = clone $red;
+			}elseif(is_int($red)){
 				$this->textColor = new PDFColor($red, $red, $red);
 			}else{
 				if(preg_match('/^\#([0-9a-f]{2})([0-9a-f]{2})([0-9a-f]{2})$/is', strtolower($red), $matches)){

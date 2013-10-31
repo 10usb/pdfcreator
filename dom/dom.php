@@ -20,8 +20,9 @@ class PDFDOM {
 		include self::path('parser/contentstate.php');
 		include self::path('parser/sectionstate.php');
 		include self::path('parser/elementstate.php');
-		
+
 		include self::path('writer.php');
+		include self::path('csstranslator.php');
 	}
 
 	public static function path($file){
