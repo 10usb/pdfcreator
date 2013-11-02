@@ -84,8 +84,7 @@ class PDFDOMWriter {
 		$body = new PDFCell($this->pdfdocument, $this->pdfdocument->getPages()->getSize()->getWidth(), $style);
 		
 		$this->_content($body->getContent(), $section->getChildrenByTagName('body', true));
-		
-		$this->_flush(false);
+	
 
 		
 		// Slice the body into pages
@@ -103,9 +102,9 @@ class PDFDOMWriter {
 	 * 
 	 * @param PDFContent $content
 	 * @param PDFDOMElement $body
-	 * @param CSSSelector $selector
+	 * @param boolean $preceding
 	 */
-	private function _content($content, $body){
+	private function _content($content, $body, $preceding = false){
 		$writer = $content->getWriter(true);
 		$writer->getStyle()->setFont($this->path->getValue('-pdf-font-family'), $this->path->getValue('font-size'));
 		$writer->getStyle()->setColor($this->path->getValue('font-color'));
@@ -113,23 +112,40 @@ class PDFDOMWriter {
 		
 		$this->bufferText = null;
 		$this->bufferDisplay = null;
+		
+		$textBuffer = new PDFDOMTextBuffer();
+		if($preceding) $textBuffer->markPreceding();
 
 		foreach($body->getChildren() as $child){
 			if($child instanceof PDFDOMText){
-				$this->_flush(false);
-				$this->bufferWriter = $writer;
-				$this->bufferText = $child->getText();
-				
+				$textBuffer->flush(); // This should never happen, but should be check and thrown an Exception
+				$textBuffer->setText($child->getText(), $writer);
 			}else{
 				$this->path->push($child->getTagName(), $child->getClasses(), null);
 				
 				switch($this->path->getValue('display')){
 					case 'block':
-						$this->_flush(true);
-						$this->_block($content, $child);
+						$style = new PDFStyle($this->pdfdocument);
+						$style->borderColor		= $this->path->getValue('border-color');
+						$style->borderWidth		= $this->path->getValue('border-width');
+						$style->backgroundColor	= $this->path->getValue('background-color');
+						$style->paddingLeft		= $this->path->getValue('padding-left');
+						$style->paddingTop		= $this->path->getValue('padding-top');
+						$style->paddingRight	= $this->path->getValue('padding-right');
+						$style->paddingBottom	= $this->path->getValue('padding-bottom');
+						
+						$body = new PDFCell($this->pdfdocument, $content->getWidth(), $style);
+						
+						$textBuffer->markTrailing();
+						$textBuffer->flush();
+						
+						$this->_content($body->getContent(), $child, true);
+						$content->append($body);
+						
+						$textBuffer->markPreceding();
 					break;
 					case 'inline':
-						$this->_flush(false);
+						$textBuffer->flush();
 						$this->_content($content, $child);
 					break;
 					default:
@@ -141,51 +157,6 @@ class PDFDOMWriter {
 				$this->path->pop();
 			}
 		}
-	}
-	
-	/**
-	 * 
-	 * @param PDFContentWriter $writer
-	 * @param PDFDOMElement $body
-	 */
-	private function _flush($block){
-		if($block){
-			if($this->bufferText!==null){
-				if($this->bufferDisplay=='block' || $this->bufferDisplay==null){
-					if(trim($this->bufferText)){
-						$this->bufferWriter->text($this->bufferText);
-					}
-				}else{
-					$this->bufferWriter->text($this->bufferText);
-				}
-			}
-		}else{
-			if($this->bufferText!==null){
-				$this->bufferWriter->text($this->bufferText);
-			}
-		}
-		$this->bufferText = null;
-		$this->bufferWriter = null;
-	}
-	
-	/**
-	 * 
-	 * @param PDFContentWriter $writer
-	 * @param PDFDOMElement $body
-	 */
-	private function _block($content, $element){
-		$style = new PDFStyle($this->pdfdocument);
-		$style->borderColor		= $this->path->getValue('border-color');
-		$style->borderWidth		= $this->path->getValue('border-width');
-		$style->backgroundColor	= $this->path->getValue('background-color');
-		$style->paddingLeft		= $this->path->getValue('padding-left');
-		$style->paddingTop		= $this->path->getValue('padding-top');
-		$style->paddingRight	= $this->path->getValue('padding-right');
-		$style->paddingBottom	= $this->path->getValue('padding-bottom');
-
-		$body = new PDFCell($this->pdfdocument, $content->getWidth(), $style);
-		$this->_content($body->getContent(), $element);
-		$this->_flush(true);
-		$content->append($body);
+		$textBuffer->flush();
 	}
 }

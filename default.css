@@ -8,27 +8,32 @@ section {
 
 h1 {
 	display: block;
+	padding: 10pt 0pt;
+	width: auto;
 	font-size: 16pt;
 	-pdf-font-family: "Times-Roman";
-	padding: 10pt 0pt;
-	
+
 	font-color: inherit;
 	line-height: inherit;
+	
 }
 
 p {
 	display: block;
 	padding: 10pt 0pt;
+	width: auto;
 	
 	-pdf-font-family: inherit;
 	font-color: inherit;
 	line-height: inherit;
 	font-size: inherit;
+	
 }
 
 strong {
 	display: inline;
 	-pdf-font-family: "Helvetica-Bold";
+	width: auto;
 	
 	font-color: inherit;
 	line-height: inherit;

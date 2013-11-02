@@ -25,8 +25,9 @@
 			</footer>
 			<body>
 				<h1>PDF Library</h1>
-				<p class="special">Hallo <strong>mooie</strong> text</p>
-				<p>Lorem ipsum dolor sit amet, <strong>consectetur adipiscing</strong> elit. Phasellus quis lectus metus, at posuere neque. Sed pharetra nibh eget orci convallis at posuere leo convallis. Sed blandit augue vitae augue scelerisque bibendum. Vivamus sit amet libero turpis, non venenatis urna. In blandit, odio convallis suscipit venenatis, ante ipsum cursus augue.</p>
+				<p class="special">Hallo <strong>mooie</strong> <strong>mooie</strong> text</p>
+asdsadsadsa
+				<p>       Lorem ipsum dolor sit amet, <strong>consectetur adipiscing</strong> elit. Phasellus quis lectus metus, at posuere neque. Sed pharetra nibh eget orci convallis at posuere leo convallis. Sed blandit augue vitae augue scelerisque bibendum. Vivamus sit amet libero turpis, non venenatis urna. In blandit, odio convallis suscipit venenatis, ante ipsum cursus augue.</p>
 				<p class="special">Hallo <strong>mooie</strong> text</p>
 				<p>Lorem ipsum dolor sit amet, <strong>consectetur adipiscing</strong> elit. Phasellus quis lectus metus, at posuere neque. Sed pharetra nibh eget orci convallis at posuere leo convallis. Sed blandit augue vitae augue scelerisque bibendum. Vivamus sit amet libero turpis, non venenatis urna. In blandit, odio convallis suscipit venenatis, ante ipsum cursus augue.</p>
 				<p class="special">Hallo <strong>mooie</strong> text</p>
