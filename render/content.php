@@ -43,7 +43,7 @@ class PDFContent {
 		
 		$height = 0;
 		foreach($this->lines as $line){
-			$height+= $line->getHeight();
+			$height+= $line ? $line->getHeight() : 0;
 		}
 		return $height;
 	}
@@ -75,6 +75,9 @@ class PDFContent {
 		// Make sure the last line gets calculates
 		if($lastLine = $this->getLastLine()) $lastLine->calculate();
 		
+		// If the last is null pop it off
+		if($this->lines && end($this->lines)==null) array_pop($this->lines);
+			
 		// Add the block as new line
 		$this->lines[] = $block;
 		
@@ -88,6 +91,10 @@ class PDFContent {
 	 * @return PDFContent
 	 */
 	public function slice($height){
+		// If the last is null pop it off
+		if($this->lines && end($this->lines)==null) array_pop($this->lines);
+		
+		// No slicing is needed when its within the defined height
 		if($this->getHeight() <= $height || count($this->lines)<=1) return null;
 		
 		$sliceHeight = 0;
@@ -107,7 +114,7 @@ class PDFContent {
 		$splitLine = $this->lines[0]->slice($height - $sliceHeight);
 		if($splitLine) $slice[] = $splitLine;
 		
-		// Makes use atleast one line is cut of
+		// Makes sure atleast one line is cut of
 		if(count($slice)<=0){
 			$slice = array_splice($this->lines, 0, 1);
 		}
@@ -134,6 +141,10 @@ class PDFContent {
 	 * @param PDFPoint $offset
 	 */
 	public function render($target, $offset){
+		// If the last is null pop it off
+		if($this->lines && end($this->lines)==null) array_pop($this->lines);
+		
+		// Make sure the last line is caculated
 		if($this->getLastLine()) $this->getLastLine()->calculate();
 		
 		foreach($this->lines as $line){

@@ -75,20 +75,18 @@ class PDFContentWriter {
 				$this->content->append(new PDFDefaultLine());
 			}
 		}else{
-			// TODO: What if a block other block type is added how is this Cleaned-up
-			$this->content->append(new PDFDefaultLine());
+			$this->content->append(null);
 		}
 
 		if($height===true){
 			$this->content->append(new PDFDefaultLine($this->style->lineHeight));
 			
-			// TODO: What if a block other block type is added how is this Cleaned-up
-			$this->content->append(new PDFDefaultLine());
+			
+			$this->content->append(null);
 		}elseif($height!==null && is_numeric($height)){
 			$this->content->append(new PDFDefaultLine($height));
 			
-			// TODO: What if a block other block type is added how is this Cleaned-up
-			$this->content->append(new PDFDefaultLine());
+			$this->content->append(null);
 		}
 	}
 }
