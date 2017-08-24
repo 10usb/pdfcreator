@@ -1,0 +1,14 @@
+{
+	"name": "10usb/pdfcreator",
+	"description": "To easily create pdf files ;)",
+	"type": "library",
+	"require": {
+		"php": ">=7.0",
+		"10usb/pdf-lib": "1.0.*",
+		"10usb/quill": "1.0.*",
+		"10usb/alf": "1.0.*"
+	},
+	"autoload": {
+		"psr-4": { "pdfcreator\\": "src/" }
+	}
+}

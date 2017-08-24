@@ -1,41 +1,111 @@
+* {
+	-quill-type: default;
+	display: inline;
+	font-family: inherit;
+	font-size: inherit;
+	font-style: inherit;
+	font-weight: inherit;
+	font-color: inherit;
+	line-height: inherit;
+}
+
 section {
+	width: 595.276pt;
+	height: 841.890pt;
 	page-margin: 50pt;
+	
+	font-family: "Times Roman";
 	font-size: 12pt;
-	-pdf-font-family: "Helvetica";
-	font-color: #222;
+	font-style: normal;
+	font-weight: normal;
+	font-color: #000;
 	line-height: 18pt;
+}
+
+body {
+	display: block;
+}
+
+strong {
+	font-weight: bold;
+}
+em {
+	font-style: italic;
+}
+
+img {
+	-quill-type: image;
+	display: inline-block;
 }
 
 h1 {
 	display: block;
-	padding: 10pt 0pt;
-	width: auto;
-	font-size: 16pt;
-	-pdf-font-family: "Times-Roman";
+	font-weight: bold;
+	font-size: 26pt;
+	margin: 18pt;
+}
 
-	font-color: inherit;
-	line-height: inherit;
-	
+h2 {
+	display: block;
+	font-weight: bold;
+	font-size: 24pt;
+	margin: 17pt;
+}
+
+h3 {
+	display: block;
+	font-weight: bold;
+	font-size: 22pt;
+	margin: 16pt;
+}
+
+h4 {
+	display: block;
+	font-weight: bold;
+	font-size: 20pt;
+	margin: 15pt;
+}
+
+h5 {
+	display: block;
+	font-weight: bold;
+	font-size: 18pt;
+	margin: 14pt;
+}
+
+h6 {
+	display: block;
+	font-weight: bold;
+	font-size: 16pt;
+	margin: 13pt;
 }
 
 p {
 	display: block;
-	padding: 10pt 0pt;
-	width: auto;
-	
-	-pdf-font-family: inherit;
-	font-color: inherit;
-	line-height: inherit;
-	font-size: inherit;
-	
+	margin: 10pt 0pt;
 }
 
-strong {
-	display: inline;
-	-pdf-font-family: "Helvetica-Bold";
-	width: auto;
-	
-	font-color: inherit;
-	line-height: inherit;
-	font-size: inherit;
+table {
+	-quill-type: table;
+	display: inline-table;
+}
+
+thead {
+	display: table-row-group;
+}
+tbody {
+	display: table-row-group;
+}
+tfoot {
+	display: table-row-group;
+}
+tr {
+	display: table-row;
+}
+td, th {
+	display: table-cell;
+}
+th {
+	text-align: center;
+	font-weight: bold;
 }
